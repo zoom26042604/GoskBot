@@ -22,6 +22,8 @@ public class JokeCommand implements ICommand {
         return "Get a random joke from the API";
     }
 
+    public String getUsage() { return "!joke"; }
+
     @Override
     public void execute(MessageReceivedEvent event, String[] args) {
         event.getChannel().sendTyping().queue();

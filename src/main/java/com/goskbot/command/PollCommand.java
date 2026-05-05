@@ -15,6 +15,8 @@ public class PollCommand implements ICommand {
         return "Create a poll: !poll <question> | <option1> | <option2> | ...";
     }
 
+    public String getUsage() { return "!poll <question> | <option1> | <option2>"; }
+
     @Override
     public void execute(MessageReceivedEvent event, String[] args) {
         if (args.length == 0) {

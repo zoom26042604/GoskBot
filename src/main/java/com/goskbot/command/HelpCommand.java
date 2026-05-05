@@ -20,6 +20,8 @@ public class HelpCommand implements ICommand {
         return "Display all available commands";
     }
 
+    public String getUsage() { return "!help"; }
+
     @Override
     public void execute(MessageReceivedEvent event, String[] args) {
         StringBuilder sb = new StringBuilder();

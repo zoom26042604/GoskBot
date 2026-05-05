@@ -2,6 +2,8 @@ package com.goskbot.listener;
 
 import com.goskbot.BotConfig;
 import com.goskbot.command.CommandManager;
+import com.goskbot.util.EmbedHelper;
+
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -38,11 +40,21 @@ public class CommandListener extends ListenerAdapter {
         System.out.println("[" + timestamp + "] Command: " + commandName + " by " + event.getAuthor().getName());
 
         var command = commandManager.getCommand(commandName);
-        if (command != null) {
-            command.execute(event, args);
-            event.getMessage().delete().queue();
-        } else {
-            event.getChannel().sendMessage("Command not found: " + commandName).queue();
+        if (command == null) {
+            var errorEmbed = EmbedHelper.createErrorEmbed(
+                    "Commande inconnue",
+                    "La commande `!" + commandName
+                            + "` n'existe pas.\nTape `!help` pour voir les commandes disponibles.");
+            event.getChannel().sendMessageEmbeds(errorEmbed).queue();
+            return;
         }
+
+        try {
+            command.execute(event, args);
+        } catch (Exception e) {
+            var errorEmbed = EmbedHelper.createErrorEmbed("Erreur", "Une erreur est survenue : " + e.getMessage());
+            event.getChannel().sendMessageEmbeds(errorEmbed).queue();
+        }
+        event.getMessage().delete().queue();
     }
 }
