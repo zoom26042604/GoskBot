@@ -40,6 +40,7 @@ public class CommandListener extends ListenerAdapter {
         var command = commandManager.getCommand(commandName);
         if (command != null) {
             command.execute(event, args);
+            event.getMessage().delete().queue();
         } else {
             event.getChannel().sendMessage("Command not found: " + commandName).queue();
         }
